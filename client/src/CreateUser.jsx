@@ -15,7 +15,7 @@ export function CreateUser(){
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const result = await axios.post("http://localhost:3001/createUser", { name, email, age });
+            const result = await axios.post("https://mern-admindashboard-server-5ovz.onrender.com/createUser", { name, email, age });
             console.log(result);
             navigate('/');
         } catch (err) {

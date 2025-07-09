@@ -11,7 +11,7 @@ const authModel=require('./Models/Auth')
 
 const app=express();
 app.use(cors({
-    origin: ["http://localhost:5173", "https://your-frontend.onrender.com"],
+    origin: ["https://mern-admindashboard-client.onrender.com"],
     credentials: true
 }));
 

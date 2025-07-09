@@ -11,7 +11,7 @@ export function UpdateUser(){
 
     useEffect(()=>{
              axios.defaults.withCredentials = true;
-            axios.get('http://localhost:3001/getUser/'+id)
+            axios.get('https://mern-admindashboard-server-5ovz.onrender.com/getUser/'+id)
             .then(result=>{console.log(result)// we must use console, becaue, we should know where the names already given in response.
             setName(result.data.name)
             setEmail(result.data.email)
@@ -27,7 +27,7 @@ export function UpdateUser(){
         const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const result = await axios.put("http://localhost:3001/updateUser/" + id, { name, email, age });
+            const result = await axios.put("https://mern-admindashboard-server-5ovz.onrender.com/updateUser/" + id, { name, email, age });
             console.log(result);
             navigate('/');
         } catch (err) {
