@@ -11,14 +11,9 @@ const authModel=require('./Models/Auth')
 
 const app=express();
 app.use(cors({
-  origin: ["https://mern-admindashboard-nzcr.onrender.com"],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+    origin:["http://localhost:5173"],
+    credentials:true
 }));
-app.options('*', cors()); // Handles preflights
-
-
 app.use(express.json());
 app.use(cookieParser());
 
@@ -48,29 +43,23 @@ app.post('/register',(req,res)=>{
 
 // Login Route (Modified to send user ID)
 app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-  authModel.findOne({ email })
-    .then(user => {
-      if (user) {
-        if (user.password === password) {
-          const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
-          res.cookie('token', token, {
-             httpOnly: true,
-             secure: process.env.NODE_ENV === 'production',
-             sameSite: 'None'
-            });
-
-          res.json({ message: "success", userId: user._id });
-        } else {
-          res.json({ message: "Password is incorrect" });
-        }
-      } else {
-        res.json({ message: "No existing record is found" });
-      }
-    })
-    .catch(err => res.json(err));
+    const { email, password } = req.body;
+    authModel.findOne({ email: email })
+        .then(user => {
+            if (user) {
+                if (user.password === password) { // In a real app, hash and compare passwords
+                    const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
+                    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' }); // Add secure for HTTPS in production
+                    res.json({ message: "success", userId: user._id }); // Send user ID
+                } else {
+                    res.json({ message: "Password is incorrect" });
+                }
+            } else {
+                res.json({ message: "No existing record is found" });
+            }
+        })
+        .catch(err => res.json(err));
 });
-
 // Add this endpoint to your backend's index.js
 app.get('/checkAuthStatus', verifyUser, (req, res) => {
     // If verifyUser middleware passes, req.userId will be set
@@ -142,7 +131,6 @@ app.delete('/deleteUser/:id', verifyUser, (req, res) => {
         .catch(err => res.status(500).json(err));
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT,()=>{
+app.listen(3001,()=>{
     console.log("server is listening")
 })

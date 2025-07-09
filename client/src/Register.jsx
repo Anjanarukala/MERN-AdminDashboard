@@ -14,7 +14,7 @@ function Register(){
     e.preventDefault();
     try {
         axios.defaults.withCredentials = true; // Ensure credentials are sent
-        const res = await axios.post('https://mern-admindashboard.onrender.com/register', { username, email, password });
+        const res = await axios.post('http://localhost:3001/register', { username, email, password });
         console.log(res);
         navigate('/login');
     } catch (err) {

@@ -13,7 +13,7 @@ function Login({ setIsLoggedIn }) {
         e.preventDefault();
         try {
             axios.defaults.withCredentials = true;
-            const result = await axios.post('https://mern-admindashboard.onrender.com/login', { email, password });
+            const result = await axios.post('http://localhost:3001/login', { email, password });
             console.log(result);
 
             // Access the 'message' property from the backend response

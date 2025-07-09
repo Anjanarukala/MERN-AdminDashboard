@@ -8,9 +8,9 @@ export function Users({ isLoggedIn, setIsLoggedIn }) {
     const navigate = useNavigate();
 
     const checkAuthStatus = async () => {
-        
+        axios.defaults.withCredentials = true;
         try {
-            const response = await axios.get('https://mern-admindashboard.onrender.com/checkAuthStatus',{withCredentials:true});
+            const response = await axios.get('http://localhost:3001/checkAuthStatus');
             if (response.data.isAuthenticated) {
                 setIsLoggedIn(true);
                 setCurrentUserId(response.data.userId);
@@ -27,7 +27,7 @@ export function Users({ isLoggedIn, setIsLoggedIn }) {
     useEffect(() => {
         checkAuthStatus();
         axios.defaults.withCredentials = true;
-        axios.get('https://mern-admindashboard.onrender.com')
+        axios.get('http://localhost:3001')
             .then(result => setUsers(result.data))
             .catch(err => console.log(err));
     }, []);
@@ -38,7 +38,7 @@ export function Users({ isLoggedIn, setIsLoggedIn }) {
 
         try {
             axios.defaults.withCredentials = true;
-            await axios.delete('https://mern-admindashboard.onrender.com/deleteUser/' + id);
+            await axios.delete('http://localhost:3001/deleteUser/' + id);
             alert("Record deleted successfully!");
             setUsers(users.filter(user => user._id !== id));
         } catch (err) {
@@ -54,7 +54,7 @@ export function Users({ isLoggedIn, setIsLoggedIn }) {
     const handleLogout = async () => {
         try {
             axios.defaults.withCredentials = true;
-            await axios.get('https://mern-admindashboard.onrender.com/logout');
+            await axios.get('http://localhost:3001/logout');
             setIsLoggedIn(false);
             setCurrentUserId(null);
             navigate('/login');
