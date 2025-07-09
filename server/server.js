@@ -35,14 +35,14 @@ const verifyUser=(req,res,next)=>{
     })
 }
 
-app.post('/register',(req,res)=>{
+app.post('https://mern-admindashboard-nzcr.onrender.com/register',(req,res)=>{
     authModel.create(req.body)
     .then(result=>res.json(result))
     .catch(err=>res.json(err))
 })
 
 // Login Route (Modified to send user ID)
-app.post('/login', (req, res) => {
+app.post('https://mern-admindashboard-nzcr.onrender.com/login', (req, res) => {
     const { email, password } = req.body;
     authModel.findOne({ email: email })
         .then(user => {
@@ -61,7 +61,7 @@ app.post('/login', (req, res) => {
         .catch(err => res.json(err));
 });
 // Add this endpoint to your backend's index.js
-app.get('/checkAuthStatus', verifyUser, (req, res) => {
+app.get('https://mern-admindashboard-nzcr.onrender.com/checkAuthStatus', verifyUser, (req, res) => {
     // If verifyUser middleware passes, req.userId will be set
     res.json({ isAuthenticated: true, userId: req.userId });
 });
@@ -69,17 +69,17 @@ app.get('/checkAuthStatus', verifyUser, (req, res) => {
 // Important: If verifyUser middleware fails (token missing/invalid), it will return an error JSON.
 // The frontend 'checkAuthStatus' catch block will handle this, setting isAuthenticated to false.
 //LogoutRoute
-app.get('/logout',(req,res)=>{
+app.get('https://mern-admindashboard-nzcr.onrender.com/logout',(req,res)=>{
      res.clearCookie('token'); // Clear the token cookie
     res.json("success")
 })
-app.get('/',(req,res)=>{
+app.get('https://mern-admindashboard-nzcr.onrender.com/',(req,res)=>{
     UserModel.find({})
     .then(users=>res.json(users))
     .catch(err=>res.json(err))
 })
 
-app.get('/getUser/:id',verifyUser,(req,res)=>{
+app.get('https://mern-admindashboard-nzcr.onrender.com/getUser/:id',verifyUser,(req,res)=>{
     const id=req.params.id;
         UserModel.findById({_id:id})
     .then(user=>{
@@ -91,14 +91,14 @@ app.get('/getUser/:id',verifyUser,(req,res)=>{
 
 
 
-app.post("/CreateUser",verifyUser,(req,res)=>{
+app.post("https://mern-admindashboard-nzcr.onrender.com/CreateUser",verifyUser,(req,res)=>{
     const {name,email,age}=req.body;
     const owner=req.userId;
     UserModel.create({name,email,age,owner})
     .then(users=>res.json(users))
     .catch(err=>res.json(err))
 })
-app.put('/updateUser/:id',verifyUser,(req,res)=>{
+app.put('https://mern-admindashboard-nzcr.onrender.com/updateUser/:id',verifyUser,(req,res)=>{
     const id=req.params.id;
     const {name,email,age}=req.body;
  UserModel.findById(id)
@@ -117,7 +117,7 @@ app.put('/updateUser/:id',verifyUser,(req,res)=>{
         .catch(err => res.status(500).json(err));
 });
 // Delete User (Protected - only owner can delete)
-app.delete('/deleteUser/:id', verifyUser, (req, res) => {
+app.delete('https://mern-admindashboard-nzcr.onrender.com/deleteUser/:id', verifyUser, (req, res) => {
     const id = req.params.id;
     UserModel.findById(id)
         .then(user => {
@@ -131,6 +131,7 @@ app.delete('/deleteUser/:id', verifyUser, (req, res) => {
         .catch(err => res.status(500).json(err));
 });
 
-app.listen(3001,()=>{
+const PORT = process.env.PORT || 3001;
+app.listen(PORT,()=>{
     console.log("server is listening")
 })
