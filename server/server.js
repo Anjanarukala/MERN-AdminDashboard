@@ -11,9 +11,10 @@ const authModel=require('./Models/Auth')
 
 const app=express();
 app.use(cors({
-    origin:["http://localhost:5173"],
-    credentials:true
+    origin: ["http://localhost:5173", "https://your-frontend.onrender.com"],
+    credentials: true
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -49,7 +50,12 @@ app.post('/login', (req, res) => {
             if (user) {
                 if (user.password === password) { // In a real app, hash and compare passwords
                     const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
-                    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' }); // Add secure for HTTPS in production
+                    res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true,         // needed for HTTPS-only cookie
+                    sameSite: "none"      // required for cross-origin cookies (frontend ↔ backend)
+                    });
+
                     res.json({ message: "success", userId: user._id }); // Send user ID
                 } else {
                     res.json({ message: "Password is incorrect" });
