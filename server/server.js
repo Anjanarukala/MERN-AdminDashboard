@@ -11,8 +11,10 @@ const authModel=require('./Models/Auth')
 
 const app=express();
 app.use(cors({
-    origin:["https://mern-admindashboard-nzcr.onrender.com"],
-    credentials:true
+    origin: ["https://mern-admindashboard-nzcr.onrender.com"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -50,10 +52,11 @@ app.post('/login', (req, res) => {
         if (user.password === password) {
           const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '1h' });
           res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'None'
-          });
+             httpOnly: true,
+             secure: process.env.NODE_ENV === 'production',
+             sameSite: 'None'
+            });
+
           res.json({ message: "success", userId: user._id });
         } else {
           res.json({ message: "Password is incorrect" });
