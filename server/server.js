@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express =require('express');
 const mongoose=require('mongoose');
 const cors=require('cors');
@@ -16,7 +17,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect(process.env.ATLASDB_URL);
 
 const jwtSecret=process.env.JWT_SECRET;
 
