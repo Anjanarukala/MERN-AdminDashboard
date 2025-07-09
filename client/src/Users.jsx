@@ -8,9 +8,9 @@ export function Users({ isLoggedIn, setIsLoggedIn }) {
     const navigate = useNavigate();
 
     const checkAuthStatus = async () => {
-        axios.defaults.withCredentials = true;
+        
         try {
-            const response = await axios.get('https://mern-admindashboard.onrender.com/checkAuthStatus');
+            const response = await axios.get('https://mern-admindashboard.onrender.com/checkAuthStatus',{withCredentials:true});
             if (response.data.isAuthenticated) {
                 setIsLoggedIn(true);
                 setCurrentUserId(response.data.userId);
